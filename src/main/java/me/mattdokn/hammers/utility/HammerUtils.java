@@ -14,7 +14,7 @@ public class HammerUtils {
         ItemStack hammer = new ItemStack(pickaxe.getType());
         ItemMeta hammerMeta = hammer.getItemMeta();
 
-        hammerMeta.displayName(Component.text(pickaxe.getType().name().split(" ")[0] + " Hammer"));
+        hammerMeta.displayName(Component.text(hammer.displayName().toString().split(" ")[0] + " Hammer"));
 
         hammerMeta.setCustomModelData(IS_HAMMER);
 
