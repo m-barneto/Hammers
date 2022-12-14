@@ -2,6 +2,7 @@ package me.mattdokn.hammers.listeners;
 
 import me.mattdokn.hammers.utility.HammerUtils;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -15,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -127,6 +129,14 @@ public class HammerListener implements Listener {
 
         if (isHammer(prevItem)) {
             e.getPlayer().removePotionEffect(PotionEffectType.SLOW_DIGGING);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        if (!e.getPlayer().hasPlayedBefore()) {
+            //e.getPlayer().discoverRecipe(NamespacedKey.fromString("diamond_block"));
+            e.getPlayer().discoverRecipes(HammerUtils.recipes);
         }
     }
 }

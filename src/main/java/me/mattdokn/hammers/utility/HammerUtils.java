@@ -17,6 +17,7 @@ import java.util.*;
 public class HammerUtils {
     public static final int IS_HAMMER = 1;
     public static HashMap<Material, Float> speedThresholds;
+    public static ArrayList<NamespacedKey> recipes;
     static {
         speedThresholds = new HashMap<>();
         speedThresholds.put(Material.WOODEN_PICKAXE, 2.f);
@@ -55,11 +56,17 @@ public class HammerUtils {
         ItemStack goldHammer = createHammer(Material.GOLDEN_PICKAXE);
         ItemStack diamondHammer = createHammer(Material.DIAMOND_PICKAXE);
 
-        ShapedRecipe woodRecipe = new ShapedRecipe(new NamespacedKey(plugin, "wooden_hammer"), woodHammer);
-        ShapedRecipe stoneRecipe = new ShapedRecipe(new NamespacedKey(plugin, "stone_hammer"), stoneHammer);
-        ShapedRecipe ironRecipe = new ShapedRecipe(new NamespacedKey(plugin, "iron_hammer"), ironHammer);
-        ShapedRecipe goldRecipe = new ShapedRecipe(new NamespacedKey(plugin, "golden_hammer"), goldHammer);
-        ShapedRecipe diamondRecipe = new ShapedRecipe(new NamespacedKey(plugin, "diamond_hammer"), diamondHammer);
+        NamespacedKey woodHammerKey = new NamespacedKey(plugin, "wooden_hammer");
+        NamespacedKey stoneHammerKey = new NamespacedKey(plugin, "stone_hammer");
+        NamespacedKey ironHammerKey = new NamespacedKey(plugin, "iron_hammer");
+        NamespacedKey goldHammerKey = new NamespacedKey(plugin, "golden_hammer");
+        NamespacedKey diamondHammerKey = new NamespacedKey(plugin, "diamond_hammer");
+
+        ShapedRecipe woodRecipe = new ShapedRecipe(woodHammerKey, woodHammer);
+        ShapedRecipe stoneRecipe = new ShapedRecipe(stoneHammerKey, stoneHammer);
+        ShapedRecipe ironRecipe = new ShapedRecipe(ironHammerKey, ironHammer);
+        ShapedRecipe goldRecipe = new ShapedRecipe(goldHammerKey, goldHammer);
+        ShapedRecipe diamondRecipe = new ShapedRecipe(diamondHammerKey, diamondHammer);
 
         woodRecipe.shape("BBB", "BBB", " S ");
         woodRecipe.setIngredient('S', Material.STICK);
@@ -90,5 +97,12 @@ public class HammerUtils {
         Bukkit.addRecipe(ironRecipe);
         Bukkit.addRecipe(goldRecipe);
         Bukkit.addRecipe(diamondRecipe);
+
+        recipes = new ArrayList<>();
+        recipes.add(woodHammerKey);
+        recipes.add(stoneHammerKey);
+        recipes.add(ironHammerKey);
+        recipes.add(goldHammerKey);
+        recipes.add(diamondHammerKey);
     }
 }
