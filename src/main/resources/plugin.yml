@@ -1,0 +1,10 @@
+name: Hammers
+version: '${project.version}'
+main: me.mattdokn.hammers.Hammers
+api-version: 1.19
+authors: [ Mattdokn ]
+description: Adds hammers that mine in a 3x3 radius!
+commands:
+  hammer:
+    description: Spawn in a diamond hammer
+    usage: /<command>
