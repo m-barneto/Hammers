@@ -6,9 +6,10 @@ import me.mattdokn.hammers.utility.HammerUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Hammers extends JavaPlugin {
-
+    public static Hammers instance;
     @Override
     public void onEnable() {
+        instance = this;
         // Register listeners and commands
         getServer().getPluginManager().registerEvents(new HammerListener(), this);
         getCommand("hammer").setExecutor(new HammerCommand());

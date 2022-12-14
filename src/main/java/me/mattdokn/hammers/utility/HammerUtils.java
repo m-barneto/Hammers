@@ -12,12 +12,19 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class HammerUtils {
     public static final int IS_HAMMER = 1;
+    public static HashMap<Material, Float> speedThresholds;
+    static {
+        speedThresholds = new HashMap<>();
+        speedThresholds.put(Material.WOODEN_PICKAXE, 2.f);
+        speedThresholds.put(Material.STONE_PICKAXE, 4.f);
+        speedThresholds.put(Material.IRON_PICKAXE, 6.f);
+        speedThresholds.put(Material.GOLDEN_PICKAXE, 12.f);
+        speedThresholds.put(Material.DIAMOND_PICKAXE, 8.f);
+    }
     public static ItemStack createHammer(ItemStack pickaxe) {
         ItemStack hammer = createHammer(pickaxe.getType());
         ItemMeta meta = hammer.getItemMeta();
