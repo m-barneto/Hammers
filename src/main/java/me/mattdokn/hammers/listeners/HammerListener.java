@@ -79,10 +79,16 @@ public class HammerListener implements Listener {
         }
     }
 
+    private boolean isPreferredTool(ItemStack tool, Block block) {
+        return block.getDestroySpeed(tool, false) > 4.0;
+    }
+
     private void breakBlocks(Player player, ItemStack tool, Location pos, List<Vector> offsets) {
         for (Vector offset : offsets) {
             Block block = player.getWorld().getBlockAt(pos.getBlockX() + offset.getBlockX(), pos.getBlockY() + offset.getBlockY(), pos.getBlockZ() + offset.getBlockZ());
-            if (!block.isPreferredTool(tool)) continue;
+            if (!isPreferredTool(tool, block)) {
+                continue;
+            }
             block.breakNaturally(tool, true);
         }
     }
