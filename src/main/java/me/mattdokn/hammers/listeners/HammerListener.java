@@ -4,6 +4,8 @@ import me.mattdokn.hammers.Hammers;
 import me.mattdokn.hammers.utility.HammerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -17,7 +19,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -77,8 +78,8 @@ public class HammerListener implements Listener {
         if (e.getPlayer().isSneaking()) return;
 
         ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
-        // if tool is hammer
-        if (isHammer(tool) && isPreferredTool(tool, e.getBlock()) && !isTileEntity(e.getBlock().getState())) {
+        // if tool is hammer and is best mined by pickaxe and not tile entity
+        if (isHammer(tool) && hasMineablePickaxeTag(e.getBlock().getType()) && !isTileEntity(e.getBlock().getState())) {
             // break blocks in 3x3 depending on block face?
             if (cachedBlockFaces.containsKey(e.getPlayer().getUniqueId())) {
                 // break in direction of block face...
@@ -96,8 +97,8 @@ public class HammerListener implements Listener {
         }
     }
 
-    private boolean isPreferredTool(ItemStack tool, Block block) {
-        return block.getBlockData().isPreferredTool(tool);
+    private boolean hasMineablePickaxeTag(Material material) {
+        return Tag.MINEABLE_PICKAXE.isTagged(material);
     }
     private boolean isTileEntity(BlockState state) {
         return state instanceof TileState;
@@ -109,7 +110,7 @@ public class HammerListener implements Listener {
     private void breakBlocks(Player player, ItemStack tool, Location pos, List<Vector> offsets) {
         for (Vector offset : offsets) {
             Block block = player.getWorld().getBlockAt(pos.getBlockX() + offset.getBlockX(), pos.getBlockY() + offset.getBlockY(), pos.getBlockZ() + offset.getBlockZ());
-            if (!isPreferredTool(tool, block)) {
+            if (!hasMineablePickaxeTag(block.getType())) {
                 continue;
             }
             if (isTileEntity(block.getState())) {
