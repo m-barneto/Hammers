@@ -8,9 +8,10 @@ public final class Hammers extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        // Register listeners and commands
         getServer().getPluginManager().registerEvents(new HammerListener(), this);
         getCommand("hammer").setExecutor(new HammerCommand());
+        // Create hammer recipes
 
     }
 

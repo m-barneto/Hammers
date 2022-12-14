@@ -12,7 +12,7 @@ public class HammerCommand implements org.bukkit.command.CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player p) {
-            ItemStack hammer = HammerUtils.createHammerFromPickaxe(new ItemStack(Material.DIAMOND_PICKAXE));
+            ItemStack hammer = HammerUtils.createHammer(new ItemStack(Material.DIAMOND_PICKAXE));
             p.getInventory().addItem(hammer);
         }
         return true;
