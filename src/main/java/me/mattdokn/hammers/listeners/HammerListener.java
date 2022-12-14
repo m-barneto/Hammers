@@ -1,14 +1,13 @@
 package me.mattdokn.hammers.listeners;
 
+import me.mattdokn.hammers.Hammers;
 import me.mattdokn.hammers.utility.HammerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.TileState;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,9 +17,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,15 +63,22 @@ public class HammerListener implements Listener {
         add(new Vector(1, -1, 0));
     }};
 
+    private static class HammerBreakBlockEvent extends BlockBreakEvent {
+        public HammerBreakBlockEvent(@NotNull Block theBlock, @NotNull Player player) {
+            super(theBlock, player);
+        }
+    }
+
     private final HashMap<UUID, BlockFace> cachedBlockFaces = new HashMap<>();
     private final PotionEffect MINING_FATIGUE = new PotionEffect(PotionEffectType.SLOW_DIGGING, 160, 0);
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
+        if (e instanceof HammerBreakBlockEvent) return;
         if (e.getPlayer().isSneaking()) return;
 
         ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
         // if tool is hammer
-        if (isHammer(tool)) {
+        if (isHammer(tool) && isPreferredTool(tool, e.getBlock()) && !isTileEntity(e.getBlock().getState())) {
             // break blocks in 3x3 depending on block face?
             if (cachedBlockFaces.containsKey(e.getPlayer().getUniqueId())) {
                 // break in direction of block face...
@@ -84,7 +92,6 @@ public class HammerListener implements Listener {
                 } else if (dir.getZ() != 0D) {
                     breakBlocks(e.getPlayer(), tool, e.getBlock().getLocation(), offsetZ);
                 }
-
             }
         }
     }
@@ -108,7 +115,11 @@ public class HammerListener implements Listener {
             if (isTileEntity(block.getState())) {
                 continue;
             }
-            block.breakNaturally(tool, true);
+            HammerBreakBlockEvent e = new HammerBreakBlockEvent(block, player);
+            Bukkit.getPluginManager().callEvent(e);
+            if (!e.isCancelled()) {
+                block.breakNaturally(tool, true);
+            }
         }
     }
 
