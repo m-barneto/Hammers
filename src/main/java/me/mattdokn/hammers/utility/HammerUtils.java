@@ -7,7 +7,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Map;
 import java.util.Set;
 
 public class HammerUtils {
@@ -17,8 +16,8 @@ public class HammerUtils {
         ItemMeta meta = hammer.getItemMeta();
 
         Set<Enchantment> enchants = pickaxe.getEnchantments().keySet();
-        for (Enchantment ench : enchants) {
-            meta.addEnchant(ench, pickaxe.getEnchantmentLevel(ench), false);
+        for (Enchantment enchant : enchants) {
+            meta.addEnchant(enchant, pickaxe.getEnchantmentLevel(enchant), true);
         }
 
         hammer.setItemMeta(meta);
