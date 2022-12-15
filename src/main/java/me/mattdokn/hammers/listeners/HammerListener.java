@@ -127,7 +127,7 @@ public class HammerListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            if (isHammer(e.getItem())) {
+            if (isHammer(e.getItem()) && e.getClickedBlock() != null && hasMineablePickaxeTag(e.getClickedBlock().getType())) {
                 e.getPlayer().addPotionEffect(MINING_FATIGUE);
             }
             // save block face
@@ -146,6 +146,7 @@ public class HammerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
+        e.getPlayer().setResourcePack("https://www.dropbox.com/s/rd46bh3c8q5jmen/HammersResourcePack.zip?dl=1", "54870a6b7ff0cf793ec53f95d2b0ce31eb57f640");
         if (!e.getPlayer().hasPlayedBefore()) {
             //e.getPlayer().discoverRecipe(NamespacedKey.fromString("diamond_block"));
             e.getPlayer().discoverRecipes(HammerUtils.recipes);
