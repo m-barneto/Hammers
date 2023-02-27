@@ -1,6 +1,5 @@
 package me.mattdokn.hammers.listeners;
 
-import me.mattdokn.hammers.Hammers;
 import me.mattdokn.hammers.utility.HammerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -8,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.TileState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -79,7 +77,7 @@ public class HammerListener implements Listener {
 
         ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
         // if tool is hammer and is best mined by pickaxe and not tile entity
-        if (isHammer(tool) && hasMineablePickaxeTag(e.getBlock().getType()) && !isTileEntity(e.getBlock().getState())) {
+        if (isHammer(tool) && hasMineablePickaxeTag(e.getBlock().getType()) && !(e.getBlock().getState() instanceof TileState)) {
             // break blocks in 3x3 depending on block face?
             if (cachedBlockFaces.containsKey(e.getPlayer().getUniqueId())) {
                 // break in direction of block face...
@@ -100,9 +98,6 @@ public class HammerListener implements Listener {
     private boolean hasMineablePickaxeTag(Material material) {
         return Tag.MINEABLE_PICKAXE.isTagged(material);
     }
-    private boolean isTileEntity(BlockState state) {
-        return state instanceof TileState;
-    }
     private boolean isHammer(ItemStack item) {
         return item != null && item.hasItemMeta() && item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == HammerUtils.IS_HAMMER;
     }
@@ -113,7 +108,7 @@ public class HammerListener implements Listener {
             if (!hasMineablePickaxeTag(block.getType())) {
                 continue;
             }
-            if (isTileEntity(block.getState())) {
+            if (block.getState() instanceof TileState) {
                 continue;
             }
             HammerBreakBlockEvent e = new HammerBreakBlockEvent(block, player);
@@ -148,7 +143,6 @@ public class HammerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         e.getPlayer().setResourcePack("https://www.dropbox.com/s/rd46bh3c8q5jmen/HammersResourcePack.zip?dl=1", "54870a6b7ff0cf793ec53f95d2b0ce31eb57f640");
         if (!e.getPlayer().hasPlayedBefore()) {
-            //e.getPlayer().discoverRecipe(NamespacedKey.fromString("diamond_block"));
             e.getPlayer().discoverRecipes(HammerUtils.recipes);
         }
     }

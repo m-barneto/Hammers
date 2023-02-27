@@ -16,29 +16,7 @@ import java.util.*;
 
 public class HammerUtils {
     public static final int IS_HAMMER = 1;
-    public static HashMap<Material, Float> speedThresholds;
     public static ArrayList<NamespacedKey> recipes;
-    static {
-        speedThresholds = new HashMap<>();
-        speedThresholds.put(Material.WOODEN_PICKAXE, 2.f);
-        speedThresholds.put(Material.STONE_PICKAXE, 4.f);
-        speedThresholds.put(Material.IRON_PICKAXE, 6.f);
-        speedThresholds.put(Material.GOLDEN_PICKAXE, 12.f);
-        speedThresholds.put(Material.DIAMOND_PICKAXE, 8.f);
-    }
-    public static ItemStack createHammer(ItemStack pickaxe) {
-        ItemStack hammer = createHammer(pickaxe.getType());
-        ItemMeta meta = hammer.getItemMeta();
-
-        Set<Enchantment> enchants = pickaxe.getEnchantments().keySet();
-        for (Enchantment enchant : enchants) {
-            meta.addEnchant(enchant, pickaxe.getEnchantmentLevel(enchant), true);
-        }
-
-        hammer.setItemMeta(meta);
-
-        return hammer;
-    }
 
     public static ItemStack createHammer(Material material) {
         ItemStack hammer = new ItemStack(material);
