@@ -6,9 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
@@ -33,18 +31,27 @@ public class HammerUtils {
         ItemStack ironHammer = createHammer(Material.IRON_PICKAXE);
         ItemStack goldHammer = createHammer(Material.GOLDEN_PICKAXE);
         ItemStack diamondHammer = createHammer(Material.DIAMOND_PICKAXE);
+        ItemStack netheriteHammer = createHammer(Material.NETHERITE_PICKAXE);
 
         NamespacedKey woodHammerKey = new NamespacedKey(plugin, "wooden_hammer");
         NamespacedKey stoneHammerKey = new NamespacedKey(plugin, "stone_hammer");
         NamespacedKey ironHammerKey = new NamespacedKey(plugin, "iron_hammer");
         NamespacedKey goldHammerKey = new NamespacedKey(plugin, "golden_hammer");
         NamespacedKey diamondHammerKey = new NamespacedKey(plugin, "diamond_hammer");
+        NamespacedKey netheriteHammerKey = new NamespacedKey(plugin, "netherite_hammer");
 
         ShapedRecipe woodRecipe = new ShapedRecipe(woodHammerKey, woodHammer);
         ShapedRecipe stoneRecipe = new ShapedRecipe(stoneHammerKey, stoneHammer);
         ShapedRecipe ironRecipe = new ShapedRecipe(ironHammerKey, ironHammer);
         ShapedRecipe goldRecipe = new ShapedRecipe(goldHammerKey, goldHammer);
         ShapedRecipe diamondRecipe = new ShapedRecipe(diamondHammerKey, diamondHammer);
+        SmithingRecipe netheriteRecipe = new SmithingTransformRecipe(
+                netheriteHammerKey,
+                netheriteHammer,
+                new RecipeChoice.MaterialChoice(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                new RecipeChoice.ExactChoice(diamondHammer),
+                new RecipeChoice.MaterialChoice(Material.NETHERITE_INGOT)
+        );
 
         woodRecipe.shape("BBB", "BBB", " S ");
         woodRecipe.setIngredient('S', Material.STICK);
@@ -70,11 +77,13 @@ public class HammerUtils {
         diamondRecipe.setIngredient('S', Material.STICK);
         diamondRecipe.setIngredient('B', Material.DIAMOND_BLOCK);
 
+
         Bukkit.addRecipe(woodRecipe);
         Bukkit.addRecipe(stoneRecipe);
         Bukkit.addRecipe(ironRecipe);
         Bukkit.addRecipe(goldRecipe);
         Bukkit.addRecipe(diamondRecipe);
+        Bukkit.addRecipe(netheriteRecipe);
 
         recipes = new ArrayList<>();
         recipes.add(woodHammerKey);
@@ -82,5 +91,6 @@ public class HammerUtils {
         recipes.add(ironHammerKey);
         recipes.add(goldHammerKey);
         recipes.add(diamondHammerKey);
+        recipes.add(netheriteHammerKey);
     }
 }
