@@ -113,7 +113,7 @@ public class HammerListener implements Listener {
             }
             HammerBreakBlockEvent e = new HammerBreakBlockEvent(block, player);
             Bukkit.getPluginManager().callEvent(e);
-            if (!e.isCancelled()) {
+            if (!e.isCancelled() && !block.getDrops(tool).isEmpty()) {
                 block.breakNaturally(tool, true);
             }
         }
